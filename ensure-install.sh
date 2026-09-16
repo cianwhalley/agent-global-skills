@@ -43,13 +43,32 @@ if [[ -z "$FACE" ]]; then
   echo "ensure-install: inferred --face $FACE"
 fi
 
+# Private GitHub: use the host transcript token when present (never print).
+_git() {
+  local token="" f
+  for f in \
+    "${SILAS_GITHUB_TOKEN_FILE:-}" \
+    "${CLEO_GITHUB_TOKEN_FILE:-}" \
+    "${XDG_CONFIG_HOME:-$HOME/.config}/silas-agent/credentials/services/github-transcript-token" \
+    "${XDG_CONFIG_HOME:-$HOME/.config}/cleo-agent/credentials/services/github-transcript-token"; do
+    [[ -n "$f" && -f "$f" ]] || continue
+    token="$(tr -d '\n' <"$f")"
+    [[ -n "$token" ]] && break
+  done
+  if [[ -n "$token" ]]; then
+    git -c "url.https://x-access-token:${token}@github.com/.insteadOf=https://github.com/" "$@"
+  else
+    git "$@"
+  fi
+}
+
 mkdir -p "$(dirname "$CACHE")"
 if [[ ! -d "$CACHE/.git" ]]; then
-  git clone --depth 1 "$REPO_URL" "$CACHE"
+  _git clone --depth 1 "$REPO_URL" "$CACHE"
 else
-  git -C "$CACHE" fetch --depth 1 origin
-  git -C "$CACHE" merge --ff-only origin/HEAD 2>/dev/null \
-    || git -C "$CACHE" pull --ff-only
+  _git -C "$CACHE" fetch --depth 1 origin
+  _git -C "$CACHE" merge --ff-only origin/HEAD 2>/dev/null \
+    || _git -C "$CACHE" pull --ff-only
 fi
 
 WANT_SHA="$(git -C "$CACHE" rev-parse --short HEAD)"
