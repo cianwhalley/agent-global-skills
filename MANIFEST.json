@@ -1,0 +1,11 @@
+{
+  "name": "agent-global-skills",
+  "description": "Face-scoped Agent Vault overlay + official agent-vault-cli for Christina, Silas, Cleo, and Cian.",
+  "repo": "cianwhalley/agent-global-skills",
+  "installDefault": "~/.cursor/skills",
+  "alsoClaude": "~/.claude/skills",
+  "skills": [
+    { "id": "secrets", "required": true },
+    { "id": "agent-vault-cli", "required": true, "notes": "Fetched from GET /v1/skills/cli at install time" }
+  ]
+}
