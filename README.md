@@ -1,6 +1,6 @@
 # agent-global-skills
 
-Shared Cursor skills for **Agent Vault**: the CT/Cleo overlay (`secrets`) plus the official `agent-vault-cli` skill.
+Shared Cursor skills for **Agent Vault**: the CT/Cleo overlay (`secrets`), the official `agent-vault-cli` skill, and (Silas/Cian faces) tutor **Linear**.
 
 Not product secrets. The overlay tells agents which vault, where the **agent token** lives (Keychain vs disk), and which broker URL — then they `source vault-env.sh` and `vault_run`.
 
@@ -9,11 +9,13 @@ Not product secrets. The overlay tells agents which vault, where the **agent tok
 ```bash
 git clone https://github.com/cianwhalley/agent-global-skills.git
 cd agent-global-skills
-bash install.sh --face silas          # Christina laptop + Silas VPS
-bash install.sh --face cleo           # Cleo VPS
-bash install.sh --face cian           # Cian laptop (vault picker)
+bash install.sh --face silas          # Christina laptop + Silas VPS (secrets + Linear)
+bash install.sh --face cleo           # Cleo VPS (secrets only)
+bash install.sh --face cian           # Cian laptop (vault picker + Linear)
 bash install.sh --face cian --also-claude
 ```
+
+Christina: `--face silas`. That installs Linear into `~/.cursor/skills/linear` (CON / tutor only). Cog / CopperTeams / Ganttsy stay on Cleo.
 
 Session-start (hubs / connected-tutoring): if `~/.cursor/skills/secrets` is missing or the stamp SHA drifted:
 
@@ -25,11 +27,11 @@ bash ensure-install.sh --face silas
 
 ## Faces
 
-| `--face` | Vault | Token | ADDR |
-|----------|-------|-------|------|
-| `silas` | `silas-spike` | Keychain on Mac, else `~/.config/agent-vault/agent-silas-spike.token` | laptop `http://cleo:14321`, VPS `http://127.0.0.1:14321` |
-| `cleo` | `cleo-spike` | `~/.config/agent-vault/agent-cleo-spike.token` | VPS localhost |
-| `cian` | picker | Keychain `agent-vault.<vault>` / `token` | `http://cleo:14321` |
+| `--face` | Vault | Token | ADDR | Linear |
+|----------|-------|-------|------|--------|
+| `silas` | `silas-spike` | Keychain on Mac, else `~/.config/agent-vault/agent-silas-spike.token` | laptop `http://cleo:14321`, VPS `http://127.0.0.1:14321` | CON / tutor |
+| `cleo` | `cleo-spike` | `~/.config/agent-vault/agent-cleo-spike.token` | VPS localhost | skip (Cleo hub) |
+| `cian` | picker | Keychain `agent-vault.<vault>` / `token` | `http://cleo:14321` | CON / tutor |
 
 Cleo must **not** run Silas `install-global-skills.sh`. Cian must **not** install `--face silas` over the picker.
 
@@ -40,4 +42,11 @@ install.sh
 ensure-install.sh
 skills/secrets/SKILL.md          # overlay ({{FACE}} / {{VAULT}} filled at install)
 skills/agent-vault-cli/SKILL.md  # official GET /v1/skills/cli (refreshed at install)
+skills/linear/                   # tutor CLI; silas + cian faces only
+```
+
+Linear after install:
+
+```bash
+bash ~/.cursor/skills/linear/scripts/with-vault.sh tutor my
 ```

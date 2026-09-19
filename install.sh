@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Install secrets overlay + official agent-vault-cli into personal Cursor skills.
+# Install secrets overlay + official agent-vault-cli (+ tutor Linear on silas/cian).
 #
-#   bash install.sh --face silas
-#   bash install.sh --face cleo
+#   bash install.sh --face silas          # Christina laptop + Silas VPS (secrets + linear)
+#   bash install.sh --face cleo           # Cleo VPS (secrets only — Linear is Cleo's own stack)
 #   bash install.sh --face cian
 #   bash install.sh --face silas --also-claude
 #   bash install.sh --face cian --prefix silas-   # Cian laptop if sharing dest with Christina copy
@@ -66,6 +66,9 @@ if [[ "$LIST" -eq 1 ]]; then
   echo "face=$FACE vault=$VAULT prefix=${PREFIX:-(none)}"
   echo "  ${PREFIX}secrets"
   echo "  ${PREFIX}agent-vault-cli"
+  if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
+    echo "  ${PREFIX}linear"
+  fi
   echo "Default dest: $(expand_tilde ~/.cursor/skills)"
   exit 0
 fi
@@ -118,9 +121,10 @@ install_skill() {
   rm -rf "$to"
   mkdir -p "$to"
   if command -v rsync >/dev/null 2>&1; then
-    rsync -a --exclude .DS_Store "$from/" "$to/"
+    rsync -a --exclude .DS_Store --exclude node_modules "$from/" "$to/"
   else
     cp -R "$from/." "$to/"
+    rm -rf "$to/scripts/node_modules" "$to/node_modules" 2>/dev/null || true
   fi
   if [[ "$id" == "secrets" ]]; then
     local tmp
@@ -138,12 +142,42 @@ install_skill() {
     >"$to/.agent-global-install"
 }
 
+npm_linear() {
+  local dest_root="$1"
+  local scripts="$dest_root/${PREFIX}linear/scripts"
+  if [[ "$DRY" -eq 1 ]]; then
+    return 0
+  fi
+  if [[ ! -f "$scripts/package.json" ]]; then
+    return 0
+  fi
+  if ! command -v npm >/dev/null 2>&1; then
+    echo "warn: npm missing — run npm install in $scripts" >&2
+    return 0
+  fi
+  local cache
+  cache="$(mktemp -d)"
+  (cd "$scripts" && npm install --omit=dev --no-fund --no-audit --cache "$cache") || \
+    echo "warn: npm install failed in $scripts — run manually" >&2
+  rm -rf "$cache"
+}
+
 for dest in "${dests[@]}"; do
   echo "Installing agent-global-skills → $dest"
   install_skill secrets "$dest"
   install_skill agent-vault-cli "$dest"
+  if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
+    install_skill linear "$dest"
+    npm_linear "$dest"
+  else
+    echo "skip linear (face=$FACE — Cleo uses its own Linear stack)"
+  fi
 done
 
 echo "Done. face=$FACE vault=$VAULT"
 echo "  secrets:         ~/.cursor/skills/${PREFIX}secrets"
 echo "  agent-vault-cli: ~/.cursor/skills/${PREFIX}agent-vault-cli"
+if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
+  echo "  linear:          ~/.cursor/skills/${PREFIX}linear"
+  echo "  try:             bash ~/.cursor/skills/${PREFIX}linear/scripts/with-vault.sh tutor my"
+fi
