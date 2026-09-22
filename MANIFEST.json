@@ -1,6 +1,6 @@
 {
   "name": "agent-global-skills",
-  "description": "Face-scoped Agent Vault overlay, official agent-vault-cli, and tutor Linear for Christina / Silas / Cian.",
+  "description": "Face-scoped Agent Vault overlay, official agent-vault-cli, tutor Linear, and the graphify skill.",
   "repo": "cianwhalley/agent-global-skills",
   "installDefault": "~/.cursor/skills",
   "alsoClaude": "~/.claude/skills",
@@ -12,6 +12,7 @@
       "required": true,
       "faces": ["silas", "cian"],
       "notes": "Tutor/CON only. Skip --face cleo. CLI vendored from silas-agent/skills/linear."
-    }
+    },
+    { "id": "graphify", "required": true, "notes": "Agents skill from the installed graphifyy package. Refresh with refresh-graphify-skill.sh after uv tool upgrade graphifyy." }
   ]
 }

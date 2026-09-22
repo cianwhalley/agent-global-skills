@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install secrets overlay + official agent-vault-cli (+ tutor Linear on silas/cian).
+# Install secrets overlay, agent-vault-cli, graphify, and tutor Linear on silas/cian.
 #
 #   bash install.sh --face silas          # Christina laptop + Silas VPS (secrets + linear)
 #   bash install.sh --face cleo           # Cleo VPS (secrets only — Linear is Cleo's own stack)
@@ -66,6 +66,8 @@ if [[ "$LIST" -eq 1 ]]; then
   echo "face=$FACE vault=$VAULT prefix=${PREFIX:-(none)}"
   echo "  ${PREFIX}secrets"
   echo "  ${PREFIX}agent-vault-cli"
+  echo "  ${PREFIX}graphify"
+  echo "  graphify also -> ~/.agents/skills and ~/.claude/skills"
   if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
     echo "  ${PREFIX}linear"
   fi
@@ -166,6 +168,7 @@ for dest in "${dests[@]}"; do
   echo "Installing agent-global-skills → $dest"
   install_skill secrets "$dest"
   install_skill agent-vault-cli "$dest"
+  install_skill graphify "$dest"
   if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
     install_skill linear "$dest"
     npm_linear "$dest"
@@ -174,9 +177,19 @@ for dest in "${dests[@]}"; do
   fi
 done
 
+# Graphify is not face-scoped. Cursor reads ~/.cursor/skills; the CLI version
+# check and Agent Skills hosts read ~/.agents/skills; Claude Code reads
+# ~/.claude/skills. Always refresh those, even when --also-claude is off
+# (that flag only adds secrets + agent-vault-cli to Claude).
+install_skill graphify "$(expand_tilde ~/.agents/skills)"
+install_skill graphify "$(expand_tilde ~/.claude/skills)"
+
 echo "Done. face=$FACE vault=$VAULT"
 echo "  secrets:         ~/.cursor/skills/${PREFIX}secrets"
 echo "  agent-vault-cli: ~/.cursor/skills/${PREFIX}agent-vault-cli"
+echo "  graphify:        ~/.cursor/skills/${PREFIX}graphify"
+echo "                   ~/.agents/skills/graphify"
+echo "                   ~/.claude/skills/graphify"
 if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
   echo "  linear:          ~/.cursor/skills/${PREFIX}linear"
   echo "  try:             bash ~/.cursor/skills/${PREFIX}linear/scripts/with-vault.sh tutor my"

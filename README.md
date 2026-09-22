@@ -1,6 +1,6 @@
 # agent-global-skills
 
-Shared Cursor skills for **Agent Vault**: the CT/Cleo overlay (`secrets`), the official `agent-vault-cli` skill, and (Silas/Cian faces) tutor **Linear**.
+Shared Cursor skills for **Agent Vault**: the CT/Cleo overlay (`secrets`), the official `agent-vault-cli` skill, (Silas/Cian faces) tutor **Linear**, and the graphify agents skill.
 
 Not product secrets. The overlay tells agents which vault, where the **agent token** lives (Keychain vs disk), and which broker URL — then they `source vault-env.sh` and `vault_run`.
 
@@ -9,9 +9,9 @@ Not product secrets. The overlay tells agents which vault, where the **agent tok
 ```bash
 git clone https://github.com/cianwhalley/agent-global-skills.git
 cd agent-global-skills
-bash install.sh --face silas          # Christina laptop + Silas VPS (secrets + Linear)
-bash install.sh --face cleo           # Cleo VPS (secrets only)
-bash install.sh --face cian           # Cian laptop (vault picker + Linear)
+bash install.sh --face silas          # Christina laptop + Silas VPS (secrets + Linear + graphify)
+bash install.sh --face cleo           # Cleo VPS (secrets + graphify)
+bash install.sh --face cian           # Cian laptop (vault picker + Linear + graphify)
 bash install.sh --face cian --also-claude
 ```
 
@@ -40,13 +40,26 @@ Cleo must **not** run Silas `install-global-skills.sh`. Cian must **not** instal
 ```
 install.sh
 ensure-install.sh
+refresh-graphify-skill.sh        # copy skill from the installed graphifyy package
 skills/secrets/SKILL.md          # overlay ({{FACE}} / {{VAULT}} filled at install)
 skills/agent-vault-cli/SKILL.md  # official GET /v1/skills/cli (refreshed at install)
 skills/linear/                   # tutor CLI; silas + cian faces only
+skills/graphify/                 # agents skill + references (.graphify_version)
 ```
 
 Linear after install:
 
 ```bash
 bash ~/.cursor/skills/linear/scripts/with-vault.sh tutor my
+```
+
+## graphify
+
+Product repos should not vendor this skill. `install.sh` copies `skills/graphify` to `~/.cursor/skills/graphify`, `~/.agents/skills/graphify`, and `~/.claude/skills/graphify`.
+
+After `uv tool upgrade graphifyy`:
+
+```bash
+bash refresh-graphify-skill.sh
+bash install.sh --face cian
 ```
