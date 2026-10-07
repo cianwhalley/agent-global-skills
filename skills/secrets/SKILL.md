@@ -3,7 +3,7 @@ name: secrets
 description: >-
   Store and consume secrets via Agent Vault proposals and vault_run. Use when
   asking the user for an API key, storing a credential, picking silas-spike vs
-  cleo-spike, or diagnosing missing tokens. Never paste secrets in chat.
+  coaching-spike vs cleo-spike, or diagnosing missing tokens. Never paste secrets in chat.
 ---
 
 # Secrets (Agent Vault overlay)
@@ -34,7 +34,7 @@ same vault on Silas VPS is the file.
 | cleo (VPS) | `cleo-spike` | `~/.config/agent-vault/agent-cleo-spike.token` | `http://127.0.0.1:14321` |
 | cian (laptop picker) | by product (below) | Keychain `agent-vault.<vault>` / `token` | `http://cleo:14321` |
 
-- **This face is silas:** never use `cleo-spike`. Source connected-tutoring or silas-agent `vault-env.sh`. On a laptop, if the hub script defaulted ADDR to localhost, `export AGENT_VAULT_ADDR=http://cleo:14321`.
+- **This face is silas:** never use `cleo-spike`. Source connected-tutoring or silas-agent `vault-env.sh`. On a laptop, if the hub script defaulted ADDR to localhost, `export AGENT_VAULT_ADDR=http://cleo:14321`. Coaching Gmail/Drive/Calendar is the one switch off `silas-spike`: set `AGENT_VAULT_VAULT=coaching-spike` after sourcing. Same token.
 - **This face is cleo:** never use `silas-spike`. Source cleo-agent `vault-env.sh`.
 - **This face is cian:** picker below. Always source the hub/repo you are in so leftover sibling env is unset.
 
@@ -50,13 +50,38 @@ If the user did not name the **vault** and the **org/product**, do not guess.
 | High-certainty signal | Vault | Credential naming |
 |-----------------------|-------|-------------------|
 | Connected Tutors, tutoring repo, hello@, TeachWorks, Quo, Odyssey, CT Stripe | `silas-spike` | `CONNECTED_TUTORS_*` or the CT table below |
-| Coaching / Christina Elaine (`*_COACHING`) | `silas-spike` | say so out loud |
+| Coaching API keys (Stripe, Loops, `*_COACHING`) | `silas-spike` | say so out loud |
+| Coaching Google `christina@christinaelaine.com` | `coaching-spike` | `CHRISTINA_ELAINE_GOOGLE_OAUTH` |
 | Cian personal, Cognitive Tech, Ganttsy, CopperTeams, Cleo Google, Xero | `cleo-spike` | never a `CONNECTED_TUTORS_*` key |
 
 Repo cwd is a hint, not a default. A generic name (`NEON_API_KEY`) is always wrong
 when the vault is shared across products.
 
-**Silas/Cleo faces skip the picker** — this install already pinned the vault.
+**Silas/Cleo faces skip the picker** — this install already pinned the vault. Coaching Google is the exception on the silas face: same token, `AGENT_VAULT_VAULT=coaching-spike`.
+
+## Google mailboxes
+
+Agents `christina-laptop` and `silas` are **members** of both `silas-spike` and `coaching-spike`. No second token, and no Keychain item named `agent-vault.coaching-spike`. Token lookup stays `agent-vault.silas-spike` / `token` on a Mac, or `~/.config/agent-vault/agent-silas-spike.token` on the VPS.
+
+`source scripts/vault-env.sh` pins `silas-spike`. For coaching mail, set the vault after that:
+
+```bash
+source scripts/vault-env.sh
+export AGENT_VAULT_VAULT=coaching-spike
+```
+
+| Mailbox | Vault | Key |
+|---------|-------|-----|
+| `hello@connectedtutors.org` | `silas-spike` | `CONNECTED_TUTORS_GOOGLE_OAUTH` |
+| `christina@christinaelaine.com` | `coaching-spike` | `CHRISTINA_ELAINE_GOOGLE_OAUTH` |
+
+Google hosts can be bound once per vault, so the two mailboxes cannot share a vault. `CHRISTINA_ELAINE_GOOGLE_OAUTH` is connected as `christina@christinaelaine.com`. Reconnect in the admin UI (`http://cleo:14321`, vault `coaching-spike`) only if that token is revoked, and only while signed in as that mailbox. Do not connect that key as hello@.
+
+## Google OAuth client (new vault only)
+
+Mac Keychain service `google-oauth.workspace-client`, account `installed-json`. This is the shared GCP client (client id + secret), not a mailbox token. **Only this skill reads it, and only when creating a new vault's Google credential.** Day-to-day Gmail, Drive, and Calendar go through Agent Vault.
+
+`security -w` prints hex when the value contains newlines. Decode the hex, then parse JSON. Never print it. Never write it back to disk. The disk copies are gone on purpose.
 
 ## Consume
 
@@ -99,12 +124,20 @@ in chat. Never `credential set` from the transcript.
 | Linear tutoring | `LINEAR_API_KEY_TUTORING` | |
 | Odyssey portals | `ODYSSEY_<ST>_USERNAME` / `_PASSWORD` | form login; not MITM |
 
+## Known keys (coaching-spike)
+
+| Need | Key | Host / notes |
+|------|------|----------------|
+| Coaching Google christina@ | `CHRISTINA_ELAINE_GOOGLE_OAUTH` | Gmail, Drive, Calendar, Sheets, Docs, Meet. Forms reads succeed through the Drive scope. |
+
 ## Do not
 
 - Paste secrets in chat, commits, `.env`, `--reveal`, or `credential get` output
 - `npm run secrets -- store --dest all`
 - Store a `cleo-spike` token on Christina’s machine
 - Dual-refresh the same Google account from disk + vault
+- Read Keychain `google-oauth.workspace-client` except when creating a new vault's Google credential
+- Write the Google OAuth client JSON back to disk
 - Reuse a rejected/expired approve link
 - Dump the whole vault with `credential list` / `service list`
 
