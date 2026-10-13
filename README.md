@@ -46,6 +46,7 @@ skills/agent-vault-cli/SKILL.md  # official GET /v1/skills/cli (refreshed at ins
 skills/linear/                   # tutor CLI; silas + cian faces only
 skills/graphify/                 # agents skill + references (.graphify_version)
 skills/google-workspace/         # Connected Tutors hello@; all faces
+skills/vercel/                   # Vercel CLI; vault bearer for api.vercel.com
 ```
 
 Linear after install:

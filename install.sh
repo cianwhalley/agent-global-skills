@@ -70,6 +70,7 @@ if [[ "$LIST" -eq 1 ]]; then
   echo "  graphify also -> ~/.agents/skills and ~/.claude/skills"
   echo "  ${PREFIX}google-workspace"
   echo "  google-workspace also -> ~/.agents/skills and ~/.claude/skills"
+  echo "  ${PREFIX}vercel"
   if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
     echo "  ${PREFIX}linear"
   fi
@@ -172,6 +173,7 @@ for dest in "${dests[@]}"; do
   install_skill agent-vault-cli "$dest"
   install_skill graphify "$dest"
   install_skill google-workspace "$dest"
+  install_skill vercel "$dest"
   if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
     install_skill linear "$dest"
     npm_linear "$dest"
@@ -198,6 +200,7 @@ echo "                   ~/.claude/skills/graphify"
 echo "  google-workspace: ~/.cursor/skills/${PREFIX}google-workspace"
 echo "                   ~/.agents/skills/google-workspace"
 echo "                   ~/.claude/skills/google-workspace"
+echo "  vercel:          ~/.cursor/skills/${PREFIX}vercel"
 if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
   echo "  linear:          ~/.cursor/skills/${PREFIX}linear"
   echo "  try:             bash ~/.cursor/skills/${PREFIX}linear/scripts/with-vault.sh tutor my"
