@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install secrets overlay, agent-vault-cli, graphify, and tutor Linear on silas/cian.
+# Install secrets overlay, agent-vault-cli, graphify, Google Workspace, and tutor Linear on silas/cian.
 #
 #   bash install.sh --face silas          # Christina laptop + Silas VPS (secrets + linear)
 #   bash install.sh --face cleo           # Cleo VPS (secrets only — Linear is Cleo's own stack)
@@ -68,6 +68,8 @@ if [[ "$LIST" -eq 1 ]]; then
   echo "  ${PREFIX}agent-vault-cli"
   echo "  ${PREFIX}graphify"
   echo "  graphify also -> ~/.agents/skills and ~/.claude/skills"
+  echo "  ${PREFIX}google-workspace"
+  echo "  google-workspace also -> ~/.agents/skills and ~/.claude/skills"
   if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
     echo "  ${PREFIX}linear"
   fi
@@ -169,6 +171,7 @@ for dest in "${dests[@]}"; do
   install_skill secrets "$dest"
   install_skill agent-vault-cli "$dest"
   install_skill graphify "$dest"
+  install_skill google-workspace "$dest"
   if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
     install_skill linear "$dest"
     npm_linear "$dest"
@@ -183,6 +186,8 @@ done
 # (that flag only adds secrets + agent-vault-cli to Claude).
 install_skill graphify "$(expand_tilde ~/.agents/skills)"
 install_skill graphify "$(expand_tilde ~/.claude/skills)"
+install_skill google-workspace "$(expand_tilde ~/.agents/skills)"
+install_skill google-workspace "$(expand_tilde ~/.claude/skills)"
 
 echo "Done. face=$FACE vault=$VAULT"
 echo "  secrets:         ~/.cursor/skills/${PREFIX}secrets"
@@ -190,6 +195,9 @@ echo "  agent-vault-cli: ~/.cursor/skills/${PREFIX}agent-vault-cli"
 echo "  graphify:        ~/.cursor/skills/${PREFIX}graphify"
 echo "                   ~/.agents/skills/graphify"
 echo "                   ~/.claude/skills/graphify"
+echo "  google-workspace: ~/.cursor/skills/${PREFIX}google-workspace"
+echo "                   ~/.agents/skills/google-workspace"
+echo "                   ~/.claude/skills/google-workspace"
 if [[ "$FACE" == "silas" || "$FACE" == "cian" ]]; then
   echo "  linear:          ~/.cursor/skills/${PREFIX}linear"
   echo "  try:             bash ~/.cursor/skills/${PREFIX}linear/scripts/with-vault.sh tutor my"

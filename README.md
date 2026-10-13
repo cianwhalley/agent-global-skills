@@ -1,6 +1,6 @@
 # agent-global-skills
 
-Shared Cursor skills for **Agent Vault**: the CT/Cleo overlay (`secrets`), the official `agent-vault-cli` skill, (Silas/Cian faces) tutor **Linear**, and the graphify agents skill.
+Shared Cursor skills for **Agent Vault**: the CT/Cleo overlay (`secrets`), the official `agent-vault-cli` skill, (Silas/Cian faces) tutor **Linear**, **Google Workspace** (Connected Tutors hello@), and the graphify agents skill.
 
 Not product secrets. The overlay tells agents which vault, where the **agent token** lives (Keychain vs disk), and which broker URL — then they `source vault-env.sh` and `vault_run`.
 
@@ -45,6 +45,7 @@ skills/secrets/SKILL.md          # overlay ({{FACE}} / {{VAULT}} filled at insta
 skills/agent-vault-cli/SKILL.md  # official GET /v1/skills/cli (refreshed at install)
 skills/linear/                   # tutor CLI; silas + cian faces only
 skills/graphify/                 # agents skill + references (.graphify_version)
+skills/google-workspace/         # Connected Tutors hello@; all faces
 ```
 
 Linear after install:
