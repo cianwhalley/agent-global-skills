@@ -20,12 +20,14 @@ export AGENT_VAULT_ADDR=http://ganttsy-vault:14321
 export AGENT_VAULT_VAULT=default
 export AGENT_VAULT_TOKEN="$(tr -d '[:space:]' < "$HOME/.config/agent-vault/agent-default.token")"
 export VERCEL_TOKEN=dummy
-agent-vault run -- vercel whoami --format json
+agent-vault run -- vercel whoami --scope ganttsy --format json
 ```
 
 Do not `vercel login`. Do not pass `--token`. Do not print `ETHAN_VERCEL_TOKEN` or `VERCEL_TOKEN`. Do not look for a token in `.env` files. If `whoami` is 401, the vault credential is missing or not approved. Stop and ask for a new approval. Do not ask the user to paste the token in chat.
 
-Default to preview deploys. Deploy to production only when the user asks. Confirm the team and project before a mutation. Pass `--scope` only when the user named a team.
+This token is scoped to the **Ganttsy** team. Pass `--scope ganttsy` on every command. Without that scope the CLI tries `zenmindhackers-projects` and returns not authorized.
+
+Default to preview deploys. Deploy to production only when the user asks. Confirm the project before a mutation.
 
 The Vercel CLI (`vercel` or `vc`) deploys, manages, and develops projects on the Vercel platform from the command line. Use `vercel <command> --help` for full flag details on any command.
 
