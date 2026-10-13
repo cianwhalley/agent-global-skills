@@ -1,6 +1,6 @@
 {
   "name": "agent-global-skills",
-  "description": "Face-scoped Agent Vault overlay, official agent-vault-cli, tutor Linear, Google Workspace, Vercel CLI, and the graphify skill.",
+  "description": "Face-scoped Agent Vault overlay, official agent-vault-cli, tutor Linear, Google Workspace, Vercel CLI, Neon CLI, and the graphify skill.",
   "repo": "cianwhalley/agent-global-skills",
   "installDefault": "~/.cursor/skills",
   "alsoClaude": "~/.claude/skills",
@@ -15,6 +15,7 @@
     },
     { "id": "graphify", "required": true, "notes": "Agents skill from the installed graphifyy package. Refresh with refresh-graphify-skill.sh after uv tool upgrade graphifyy." },
     { "id": "google-workspace", "required": true, "notes": "Connected Tutors hello@ Gmail, Calendar, Drive, Sheets, and Docs. Vault silas-spike key CONNECTED_TUTORS_GOOGLE_OAUTH." },
-    { "id": "vercel", "required": true, "notes": "Vercel CLI skill vendored from vercel/vercel. Ganttsy agent auth is ETHAN_VERCEL_TOKEN on vault default, injected for api.vercel.com." }
+    { "id": "vercel", "required": true, "notes": "Vercel CLI skill vendored from vercel/vercel. Ganttsy agent auth is ETHAN_VERCEL_TOKEN on vault default, injected for api.vercel.com." },
+    { "id": "neon", "required": true, "notes": "Neon skill vendored from neondatabase/agent-skills. Ganttsy agent auth is ETHAN_NEON_API_KEY on vault default, injected for console.neon.tech. Org org-restless-hill-73095951." }
   ]
 }

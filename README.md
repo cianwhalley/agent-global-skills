@@ -47,6 +47,7 @@ skills/linear/                   # tutor CLI; silas + cian faces only
 skills/graphify/                 # agents skill + references (.graphify_version)
 skills/google-workspace/         # Connected Tutors hello@; all faces
 skills/vercel/                   # Vercel CLI; vault bearer for api.vercel.com
+skills/neon/                     # Neon CLI; vault bearer for console.neon.tech
 ```
 
 Linear after install:
