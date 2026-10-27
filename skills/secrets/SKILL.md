@@ -77,7 +77,7 @@ export AGENT_VAULT_VAULT=ct-christina-spike
 | `christina@christinaelaine.com` | `coaching-spike` | `CHRISTINA_ELAINE_GOOGLE_OAUTH` |
 | `christina@connectedtutors.org` | `ct-christina-spike` | `CT_CHRISTINA_GOOGLE_OAUTH` |
 
-Google hosts can be bound once per vault, so these three mailboxes cannot share a vault. Each key stays bound to the mailbox in that row. `CT_CHRISTINA_GOOGLE_OAUTH` works only after consent as `christina@connectedtutors.org`. Reconnect in the admin UI (`http://cleo:14321`) only if that token is revoked, and only while signed in as that mailbox. The Google callback is `http://127.0.0.1:14321` on cleo, so finish consent through an SSH tunnel to that port. Do not start Connect again with an empty client secret — that wipes the stored secret. Do not connect `CT_CHRISTINA_GOOGLE_OAUTH` as hello@ or as `christina@christinaelaine.com`. `ct-christina-spike` is Google only: no Stripe, Loops, or Mercury.
+Google hosts can be bound once per vault, so these three mailboxes cannot share a vault. Each key stays bound to the mailbox in that row. `CT_CHRISTINA_GOOGLE_OAUTH` is connected as `christina@connectedtutors.org`. Reconnect in the admin UI (`http://cleo:14321`) only if that token is revoked, and only while signed in as that mailbox. The Google callback is `http://127.0.0.1:14321` on cleo, so finish consent through an SSH tunnel to that port. Do not start Connect again with an empty client secret — that wipes the stored secret. Do not connect `CT_CHRISTINA_GOOGLE_OAUTH` as hello@ or as `christina@christinaelaine.com`. `ct-christina-spike` is Google only: no Stripe, Loops, or Mercury.
 
 ## Google OAuth client (new vault only)
 
