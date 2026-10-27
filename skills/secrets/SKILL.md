@@ -36,7 +36,7 @@ same vault on Silas VPS is the file.
 
 - **This face is silas:** never use `ctci-vault`. Source connected-tutoring or silas-agent `vault-env.sh`. On a laptop, if the hub script defaulted ADDR to localhost, `export AGENT_VAULT_ADDR=http://cleo:14321`. Two switches off `ct-hello-vault`, same token: `AGENT_VAULT_VAULT=coach-vault` for `christina@christinaelaine.com`, and `AGENT_VAULT_VAULT=ct-christina-vault` for `christina@connectedtutors.org`. Set that after sourcing.
 - **This face is cleo:** never use `ct-hello-vault`. Source cleo-agent `vault-env.sh`.
-- **This face is cian:** picker below. Always source the hub/repo you are in so leftover sibling env is unset.
+- **This face is cian:** picker below. Always source the hub/repo you are in so leftover sibling env is unset. The Keychain tokens on this laptop are the **`cian-laptop`** agent: proxy on `ct-hello-vault`, member of `coach-vault`, `ct-christina-vault`, and `ctci-vault`. Silas keeps its own token. Cleo keeps its own token. The Cleo agent is named `cleo`.
 
 Owner password / `credential get` is **not** for agents. Proxy agent tokens only.
 
