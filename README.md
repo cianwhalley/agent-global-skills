@@ -29,8 +29,8 @@ bash ensure-install.sh --face silas
 
 | `--face` | Vault | Token | ADDR | Linear |
 |----------|-------|-------|------|--------|
-| `silas` | `silas-spike` | Keychain on Mac, else `~/.config/agent-vault/agent-silas-spike.token` | laptop `http://cleo:14321`, VPS `http://127.0.0.1:14321` | CON / tutor |
-| `cleo` | `cleo-spike` | `~/.config/agent-vault/agent-cleo-spike.token` | VPS localhost | skip (Cleo hub) |
+| `silas` | `ct-hello-vault` | Keychain on Mac, else `~/.config/agent-vault/agent-ct-hello-vault.token` | laptop `http://cleo:14321`, VPS `http://127.0.0.1:14321` | CON / tutor |
+| `cleo` | `ctci-vault` | `~/.config/agent-vault/agent-ctci-vault.token` | VPS localhost | skip (Cleo hub) |
 | `cian` | picker | Keychain `agent-vault.<vault>` / `token` | `http://cleo:14321` | CON / tutor |
 
 Cleo must **not** run Silas `install-global-skills.sh`. Cian must **not** install `--face silas` over the picker.

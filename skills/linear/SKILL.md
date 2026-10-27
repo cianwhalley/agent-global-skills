@@ -8,7 +8,7 @@ description: >-
 
 # Linear (Connected Tutors)
 
-Tutor / **CON** only. Credential: `LINEAR_API_KEY_TUTORING` in vault **silas-spike**.
+Tutor / **CON** only. Credential: `LINEAR_API_KEY_TUTORING` in vault **ct-hello-vault**.
 
 Do **not** use Cian’s Keychain `linear-management` skill. Do **not** query Cog, CopperTeams, or Ganttsy here — those are Cleo.
 

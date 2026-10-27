@@ -3,7 +3,7 @@
  * sheets-ct — Google Sheets CLI for Connected Tutors.
  *
  * Primitives: get-range, get-column, append-rows, find-row, update-cell, create-sheet.
- * Auth: Agent Vault silas-spike MITM when under vault_run (preferred);
+ * Auth: Agent Vault ct-hello-vault MITM when under vault_run (preferred);
  * otherwise access-token.mjs local OAuth (legacy / offline).
  * JSON output by default for machine callers.
  *

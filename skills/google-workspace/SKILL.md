@@ -2,7 +2,7 @@
 name: google-workspace
 description: >-
   Google Workspace for Connected Tutors (hello@connectedtutors.org) — Gmail,
-  Calendar, Drive, Sheets, Docs. Primary auth is Agent Vault silas-spike
+  Calendar, Drive, Sheets, Docs. Primary auth is Agent Vault ct-hello-vault
   (CONNECTED_TUTORS_GOOGLE_OAUTH) via agent-vault run; local token files are
   secondary/legacy. Pair with MCP in connected-tutoring/.cursor/mcp.json.
 ---
@@ -13,7 +13,7 @@ Account: **`hello@connectedtutors.org`**.
 
 ## Auth (primary): Agent Vault
 
-Live OAuth is **`CONNECTED_TUTORS_GOOGLE_OAUTH`** in vault **`silas-spike`** on `cleo`. MITM injects the access token — do **not** add `Authorization:` yourself, and do **not** dual-refresh from host/laptop token files.
+Live OAuth is **`CONNECTED_TUTORS_GOOGLE_OAUTH`** in vault **`ct-hello-vault`** on `cleo`. MITM injects the access token — do **not** add `Authorization:` yourself, and do **not** dual-refresh from host/laptop token files.
 
 ```bash
 # From connected-tutoring repo (works on Cian’s and Christina’s laptops once set up)
@@ -27,10 +27,14 @@ Or without the helper:
 
 ```bash
 export AGENT_VAULT_ADDR=http://cleo:14321
-export AGENT_VAULT_VAULT=silas-spike
+export AGENT_VAULT_VAULT=ct-hello-vault
 # Mac Keychain first; VPS uses the disk file.
-if security find-generic-password -s 'agent-vault.silas-spike' -a 'token' >/dev/null 2>&1; then
+if security find-generic-password -s 'agent-vault.ct-hello-vault' -a 'token' >/dev/null 2>&1; then
+  export AGENT_VAULT_TOKEN="$(security find-generic-password -s 'agent-vault.ct-hello-vault' -a 'token' -w | tr -d '[:space:]')"
+elif security find-generic-password -s 'agent-vault.silas-spike' -a 'token' >/dev/null 2>&1; then
   export AGENT_VAULT_TOKEN="$(security find-generic-password -s 'agent-vault.silas-spike' -a 'token' -w | tr -d '[:space:]')"
+elif [[ -f ~/.config/agent-vault/agent-ct-hello-vault.token ]]; then
+  export AGENT_VAULT_TOKEN="$(tr -d '[:space:]' < ~/.config/agent-vault/agent-ct-hello-vault.token)"
 else
   export AGENT_VAULT_TOKEN="$(tr -d '[:space:]' < ~/.config/agent-vault/agent-silas-spike.token)"
 fi
@@ -41,16 +45,15 @@ Full laptop + Christina setup: **`connected-tutoring/playbooks/christina-laptop-
 Global keystore rules: **`~/.claude/skills/secrets/SKILL.md`**.  
 Silas playbook: `silas-agent/playbooks/ct-google.md`.
 
-Do **not** use Cleo’s `GOOGLE_OAUTH` / `cleo-spike` for hello@.
+Do **not** use Cleo’s `GOOGLE_OAUTH` / `ctci-vault` for hello@.
 Do **not** dual-refresh disk token files + vault for the same account.
 
 ## Workspace Admin (create teacher users) — laptop only
 
-Creating `firstname@connectedtutors.org` uses a **separate** laptop Admin Directory token. Never put it in Silas/vault. The listen script below still expects the shared OAuth client JSON on disk; that file is gone. Do not recreate it. A new vault Google connect goes through the secrets skill.
+Creating `firstname@connectedtutors.org` uses a **separate** laptop Admin Directory token in the Mac keychain (`google-oauth.workspace-admin` / `token-json`). Never put it in Silas or Agent Vault. The listen script reads the shared OAuth client from keychain (`google-oauth.workspace-client` / `installed-json`) and writes the admin token back to the keychain. Do not recreate the client JSON on disk.
 
 ```bash
 node ~/.claude/skills/google-workspace/scripts/auth-workspace-admin.mjs --listen
-# → ~/.config/claude-skills/credentials/connected-tutors-workspace-admin-token.json
 ```
 
 Provision CLI: `connected-tutoring/.claude/skills/workspace-admin/SKILL.md`.
@@ -80,7 +83,7 @@ If `access-token.mjs` / refresh fails with **`invalid_grant` / revoked**, **stop
 
 ## Re-connect (vault — preferred)
 
-1. Open `http://cleo:14321` → vault **silas-spike**.
+1. Open `http://cleo:14321` → vault **ct-hello-vault**.
 2. Reconnect **`CONNECTED_TUTORS_GOOGLE_OAUTH`** as `hello@connectedtutors.org`.
 3. Prove Gmail HTTP 200 via `vault_run` as above.
 

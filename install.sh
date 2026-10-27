@@ -40,8 +40,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$FACE" in
-  silas) VAULT="silas-spike" ;;
-  cleo) VAULT="cleo-spike" ;;
+  silas) VAULT="ct-hello-vault" ;;
+  cleo) VAULT="ctci-vault" ;;
   cian) VAULT="picker" ;;
   "")
     echo "install.sh: --face silas|cleo|cian is required" >&2

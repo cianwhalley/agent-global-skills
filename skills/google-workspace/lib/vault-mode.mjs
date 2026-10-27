@@ -1,7 +1,7 @@
 /**
  * Agent Vault MITM helpers for Connected Tutors Google CLIs / inline Node.
  *
- * When a process runs under `agent-vault run` / `vault_run` (silas-spike),
+ * When a process runs under `agent-vault run` / `vault_run` (ct-hello-vault),
  * HTTPS is proxied and CONNECTED_TUTORS_GOOGLE_OAUTH is injected. Do **not**
  * refresh or send a local Bearer token — dual-refresh fights the vault.
  *
@@ -29,7 +29,7 @@ export function isVaultMode() {
 export function vaultModeHint() {
   return (
     'Source connected-tutoring/scripts/vault-env.sh and run under vault_run ' +
-    '(silas-spike / CONNECTED_TUTORS_GOOGLE_OAUTH). ' +
+    '(ct-hello-vault / CONNECTED_TUTORS_GOOGLE_OAUTH). ' +
     'Do not refresh local ~/.config/claude-skills/credentials/connected-tutors-google-token.json.'
   );
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Find CT vault-env (silas-spike), then run linear-router under vault_run.
+# Find CT vault-env (ct-hello-vault), then run linear-router under vault_run.
 # Linear is passthrough — MITM cannot pick among orgs on api.linear.app.
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

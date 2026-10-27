@@ -33,9 +33,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$FACE" ]]; then
-  if [[ "$(uname -s)" == "Darwin" ]] && security find-generic-password -s 'agent-vault.cleo-spike' -a token >/dev/null 2>&1; then
+  if [[ "$(uname -s)" == "Darwin" ]] && { security find-generic-password -s 'agent-vault.ctci-vault' -a token >/dev/null 2>&1 || security find-generic-password -s 'agent-vault.cleo-spike' -a token >/dev/null 2>&1; }; then
     FACE=cian
-  elif [[ -f "$HOME/.config/agent-vault/agent-cleo-spike.token" ]] && [[ ! -f "$HOME/.config/agent-vault/agent-silas-spike.token" ]] && [[ "$(uname -s)" != "Darwin" ]]; then
+  elif { [[ -f "$HOME/.config/agent-vault/agent-ctci-vault.token" ]] || [[ -f "$HOME/.config/agent-vault/agent-cleo-spike.token" ]]; } && [[ ! -f "$HOME/.config/agent-vault/agent-ct-hello-vault.token" ]] && [[ ! -f "$HOME/.config/agent-vault/agent-silas-spike.token" ]] && [[ "$(uname -s)" != "Darwin" ]]; then
     FACE=cleo
   else
     FACE=silas

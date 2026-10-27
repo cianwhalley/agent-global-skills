@@ -3,7 +3,7 @@
  * cal-ct — Google Calendar CLI for Connected Tutors.
  *
  * Primitives: list-calendars, list-events.
- * Auth: Agent Vault silas-spike MITM when under vault_run (preferred);
+ * Auth: Agent Vault ct-hello-vault MITM when under vault_run (preferred);
  * otherwise access-token.mjs local OAuth (legacy / offline).
  * JSON output by default for machine callers.
  */

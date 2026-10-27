@@ -3,7 +3,7 @@
  * drive-ct — Google Drive CLI for Connected Tutors.
  *
  * Primitives: list, create-folder, copy, copy-tree, share, get.
- * Auth: Agent Vault silas-spike MITM when under vault_run (preferred);
+ * Auth: Agent Vault ct-hello-vault MITM when under vault_run (preferred);
  * otherwise access-token.mjs local OAuth (legacy / offline).
  * JSON output by default for machine callers.
  *

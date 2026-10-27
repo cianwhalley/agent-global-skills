@@ -55,7 +55,7 @@ function refreshAccessToken(registryId) {
               const hint =
                 refreshed.error === 'invalid_grant' &&
                 registryId === 'connected-tutors-google'
-                  ? ' Local refresh token is revoked. Prefer Agent Vault silas-spike (CONNECTED_TUTORS_GOOGLE_OAUTH): source connected-tutoring/scripts/vault-env.sh && vault_run curl … — see .claude/skills/agent-vault/SKILL.md. Do not dual-refresh from disk.'
+                  ? ' Local refresh token is revoked. Prefer Agent Vault ct-hello-vault (CONNECTED_TUTORS_GOOGLE_OAUTH): source connected-tutoring/scripts/vault-env.sh && vault_run curl … — see .claude/skills/agent-vault/SKILL.md. Do not dual-refresh from disk.'
                   : refreshed.error === 'invalid_grant' &&
                       registryId === 'connected-tutors-workspace-admin'
                     ? ' Re-auth laptop-only: node ~/.claude/skills/google-workspace/scripts/auth-workspace-admin.mjs --listen (do not put this token in Silas/vault).'
